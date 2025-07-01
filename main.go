@@ -192,7 +192,7 @@ func main() {
 		if method == http.MethodOptions {
 			if !bypass {
 				// forward OPTIONS request to auth url, and return response, headers to client
-				req, err := http.NewRequest(http.MethodOptions, C.Auth.Url, nil)
+				req, err := http.NewRequest(http.MethodOptions, C.Auth.Url+path, nil)
 				if err != nil {
 					return c.Status(http.StatusInternalServerError).SendString(err.Error())
 				}
@@ -219,7 +219,7 @@ func main() {
 		var authResp *http.Response
 		if !bypass {
 			// forward request to auth url, and return headers to next request
-			authReq, err := http.NewRequest(method, C.Auth.Url, bytes.NewReader([]byte{}))
+			authReq, err := http.NewRequest(method, C.Auth.Url+path, bytes.NewReader([]byte{}))
 			if err != nil {
 				return c.Status(http.StatusInternalServerError).SendString(err.Error())
 			}
