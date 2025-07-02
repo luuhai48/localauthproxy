@@ -174,12 +174,13 @@ func main() {
 	app.Use("*", func(c *fiber.Ctx) error {
 		method := c.Method()
 
-		prefix := strings.Split(c.Path(), "/")[1]
+		originalUrl := c.OriginalURL()
+		prefix := strings.Split(originalUrl, "/")[1]
 		target, ok := targetMap[prefix]
-		if c.Path() == "/" || !ok {
+		if originalUrl == "/" || !ok {
 			return c.Status(http.StatusBadRequest).SendString("Prefix \"" + prefix + "\" not found in mappings")
 		}
-		path := c.Path()[len(prefix)+1:]
+		path := originalUrl[len(prefix)+1:]
 
 		bypass := false
 		for _, w := range target.Whitelist {
