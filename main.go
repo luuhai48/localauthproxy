@@ -220,7 +220,7 @@ func main() {
 		var authResp *http.Response
 		if !bypass {
 			// forward request to auth url, and return headers to next request
-			authReq, err := http.NewRequest(method, C.Auth.Url+path, bytes.NewReader([]byte{}))
+			authReq, err := http.NewRequest(method, C.Auth.Url+path, bytes.NewReader(c.Body()))
 			if err != nil {
 				return c.Status(http.StatusInternalServerError).SendString(err.Error())
 			}
