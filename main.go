@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"net/http"
 	"net/url"
@@ -14,6 +15,8 @@ import (
 )
 
 const (
+	AppName           = "Local Proxy"
+	AppVersion        = "v0.3.2"
 	DefaultAddr       = ":3333"
 	DefaultTimeoutMs  = 10000
 	DefaultConfigName = "config"
@@ -163,12 +166,12 @@ func main() {
 		}
 	}
 
-	var httpClient = &http.Client{
+	httpClient := &http.Client{
 		Timeout: time.Duration(C.Client.TimeoutMs) * time.Millisecond,
 	}
 
 	app := fiber.New(fiber.Config{
-		AppName: "Local auth proxy",
+		AppName: fmt.Sprintf("%s %s", AppName, AppVersion),
 	})
 
 	app.Use("*", func(c *fiber.Ctx) error {
